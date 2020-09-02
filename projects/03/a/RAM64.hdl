@@ -16,4 +16,27 @@ CHIP RAM64 {
 
     PARTS:
     // Put your code here:
+    // send the lower bits to the RAM chips
+    // use the higher bits as selectors
+    DMux8Way(in=load, sel=address[3..5], a=ma, b=mb, c=mc, d=md, e=me, f=mf, g=mg, h=mh);
+
+    RAM8(in=in, address=address[0..2], load=ma, out=oa);
+    RAM8(in=in, address=address[0..2], load=mb, out=ob);
+    RAM8(in=in, address=address[0..2], load=mc, out=oc);
+    RAM8(in=in, address=address[0..2], load=md, out=od);
+    RAM8(in=in, address=address[0..2], load=me, out=oe);
+    RAM8(in=in, address=address[0..2], load=mf, out=of);
+    RAM8(in=in, address=address[0..2], load=mg, out=og);
+    RAM8(in=in, address=address[0..2], load=mh, out=oh);
+ 
+    Mux8Way16(sel=address[3..5], out=out,
+        a=oa,
+        b=ob,
+        c=oc, 
+        d=od,
+        e=oe,
+        f=of,
+        g=og,
+        h=oh
+    );
 }

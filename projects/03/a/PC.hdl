@@ -17,4 +17,18 @@ CHIP PC {
 
     PARTS:
     // Put your code here:
+    //Start with stateful register
+    Register(in=statefulIn, load=true, out=out, out=registerOut);
+
+    // feed register out into incrementer
+    Inc16(in=registerOut, out=incOut);
+
+    // mux16 and select on increment
+    Mux16(a=registerOut, b=incOut, sel=inc, out=incMuxOut);
+
+    // choose between increment and load with another Mux16
+    Mux16(a=incMuxOut, b=in, sel=load, out=loadMuxOut);
+
+    //last, choose bteween load and reset, and send into register
+    Mux16(a=loadMuxOut, b[0..15]=false, sel=reset, out=statefulIn);
 }
